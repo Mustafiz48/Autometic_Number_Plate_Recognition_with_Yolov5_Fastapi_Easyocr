@@ -1,0 +1,3 @@
+Add yolov5 trained weight here. The weight must e converted to onnx. 
+The code can be found in the following directory
+https://drive.google.com/file/d/1VWhbm7A1xJ3CMQbphywOYrpOAR6DtBKU/view?usp=sharing
