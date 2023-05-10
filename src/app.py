@@ -165,15 +165,16 @@ async def get_stream(websocket: WebSocket, db: Session = Depends(get_db)):
                 # print("lalala")
                 # print(license_number.decode('utf-8'))
                 # print("\n\n") 
+                # print("Encoded:", encoded_license_number)
                 decoded_license_number = base64.b64decode(encoded_license_number)
                 license = decoded_license_number.decode('utf8')
                 print("Lincese number: ", license)
                 user = crud.get_user_by_license(db, license_number=encoded_license_number)
                 if user:
                     print("Car Owner: ", user.name)
-                    await websocket.send_text(f"Success! The car with license {license}, owner {user.name} is allowed")
+                    await websocket.send_text(f"Success! Car information:<br>License Number: <b>{license}</b>, <br>Owner: <b>{user.name}</b> <br>Deparment: <b>{user.department}</b> <br>Designation: <b>{user.designation}</b>")
                 else:
-                    await websocket.send_text(f"Failed! The car with license {license} is not registered in the database")
+                    await websocket.send_text(f"Failed! {str(license)}")
 
             if not success:
                 break
@@ -215,6 +216,29 @@ def registraion_page(request: Request):
     return templates.TemplateResponse("Registration.html", {"request": request})
 
 
+@app.post("/{license_number}/create_guest/")
+def add_guest(        
+    request: Request,
+    name: Annotated[str, Form()],
+    phone: Annotated[str, Form()],
+    license_number: str,
+    db: Session = Depends(get_db)):
+
+    guest = models.Guest(name=name, phone = phone, license_number = license_number)
+    crud.create_guest(db=db, guest=guest)
+
+    return templates.TemplateResponse("Success.html",{"request":request})
+
+@app.get("/{license_number}/guest_registration/")
+def add_guest(        
+    request: Request,
+    license_number: str):
+
+    return templates.TemplateResponse("Guest_Registration.html", {"request":request, "license_number":license_number})
+
+
 @app.get("/")
 def root(request: Request):
     return templates.TemplateResponse("Home.html", {"request": request})
+
+

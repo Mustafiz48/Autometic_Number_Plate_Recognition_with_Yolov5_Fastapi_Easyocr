@@ -125,12 +125,12 @@ class License_Recognizer:
             text_en = ' '.join([res[1] for res in result_en])
             text_en = text_en.strip()
 
-            if not text_bn and text_en:
-                return "E"+text_en
-            if not text_en and text_bn:
-                return "B"+text_bn
 
-            if len(text_bn) > len(text_en):
+            if text_bn:
                 return "B"+text_bn
-            else:
+            elif text_en:
                 return "E"+text_en
+            # if len(text_bn) > len(text_en):
+            #     return "B"+text_bn
+            # else:
+            #     return "E"+text_en

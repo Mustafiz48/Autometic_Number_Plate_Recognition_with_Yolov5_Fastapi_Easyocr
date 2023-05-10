@@ -46,3 +46,14 @@ def create_user_car(db: Session, car: schemas.CarCreate, user_id: int):
     db.commit()
     db.refresh(db_car)
     return db_car
+
+def create_guest(db: Session, guest: schemas.Guest_Create):
+    db_guest = models.Guest(
+        name=guest.name,
+        phone=guest.phone,
+        license_number = guest.license_number,
+        )
+    db.add(db_guest)
+    db.commit()
+    db.refresh(db_guest)
+    return db_guest

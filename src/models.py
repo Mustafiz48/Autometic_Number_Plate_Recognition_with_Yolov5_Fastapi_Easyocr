@@ -22,3 +22,13 @@ class User(Base):
     department = Column(String(64), index=True)
     car = relationship("Car", back_populates="owner")
 
+
+class Guest(Base):
+    __tablename__ = "guest"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(64), index=True)
+    phone = Column(String(64), index=True)
+    license_number = Column(String(512), index=True)
+
+    

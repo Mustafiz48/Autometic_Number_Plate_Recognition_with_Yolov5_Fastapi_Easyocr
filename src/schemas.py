@@ -37,11 +37,17 @@ class User(UserBase):
         orm_mode = True
 
 
-class New_User(BaseModel):
+
+class Guest_Base(BaseModel):
     name: str
     phone: str
-    designation: str
-    department: str
+    license_number: str
+    reference: str
 
+class Guest_Create(Guest_Base):
+    pass
+
+class Guest(Guest_Base):
+    id: int
     class Config:
         orm_mode = True

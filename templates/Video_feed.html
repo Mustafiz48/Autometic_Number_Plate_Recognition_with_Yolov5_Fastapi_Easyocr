@@ -40,8 +40,8 @@
                         </div>
                         <div class="modal-body">
                             <div class="container">
-                                <img src="http://localhost:8000/assets/success_animation.gif" alt="Snow" style="width:80%;margin-left: 10%;">
-                                <div id = "text_area_success"></div>
+                                <img src="http://localhost:8000/assets/success_animation.gif" alt="Snow" style="width:60%;margin-left: 20%;">
+                                <div id = "text_area_success" class = "mb-3"></div>
                                 <a href="http://localhost:8000/"><button type="button" class="btn btn-outline-success  btn-lg" style="margin-left:28%"><b>Return Home</b></button></a>
                             </div>          
                         </div>
@@ -60,9 +60,11 @@
                         </div>
                         <div class="modal-body">
                             <div class="container">
-                                <img src="http://localhost:8000/assets/failed.gif" alt="Snow" style="width:80%;margin-left: 10%;">
-                                <div id = "text_area_failed"></div>
-                                <a href="http://localhost:8000/"><button type="button" class="btn btn-outline-success  btn-lg" style="margin-left:28%"><b>Return Home</b></button></a>
+                                <img src="http://localhost:8000/assets/failed.gif" alt="Snow" style="width:60%;margin-left: 20%;">
+                                <div id = "text_area_failed" class = "mb-3"></div>
+                                <a href="http://localhost:8000/"><button type="button" class="btn btn-outline-success  btn-lg" style="margin-left:13%"><b>Return Home</b></button></a>
+                                <a id = "guest_link" ><button type="button" class="btn btn-outline-info  btn-lg"><b>Allow as Guest</b></button></a>
+
                             </div>          
                         </div>
                     </div>
@@ -90,13 +92,20 @@
                     if (event.data.startsWith("Success")) {
                             var myModal = new bootstrap.Modal(document.getElementById('SuccessModal'), {})
                             myModal.toggle()
-                            document.getElementById("text_area_success").innerHTML = event.data;
+                            document.getElementById("text_area_success").innerHTML = event.data.slice(9);
 
                         }
                     else if (event.data.startsWith("Failed")) {
                             var myModal = new bootstrap.Modal(document.getElementById('FailedModal'), {})
-                            myModal.toggle()
-                            document.getElementById("text_area_failed").innerHTML = event.data;
+                            myModal.toggle();
+                            var license_number = event.data.slice(8);
+                            var encoded_license_number = btoa(unescape(encodeURIComponent(license_number)))
+                            console.log("Encoded License:" + encoded_license_number)
+                            guest_link = "http://localhost:8000/" + encoded_license_number + "/guest_registration/"
+                            console.log("link:",guest_link)
+                            document.getElementById("text_area_failed").innerHTML ="The vehicle with license number: <b>" + license_number+"</b> is not registered in the database.";
+
+                            document.getElementById("guest_link").setAttribute("href",guest_link);
                     }
 
                 }
